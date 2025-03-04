@@ -1,4 +1,4 @@
-import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import { HousePlug, LogOut, Menu, ShoppingCart, UserCog, Search } from "lucide-react";
 import {
   Link,
   useLocation,
@@ -33,19 +33,19 @@ function MenuItems() {
     sessionStorage.removeItem("filters");
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
-      getCurrentMenuItem.id !== "products" &&
-      getCurrentMenuItem.id !== "search"
+        getCurrentMenuItem.id !== "products" &&
+        getCurrentMenuItem.id !== "search"
         ? {
-            category: [getCurrentMenuItem.id],
-          }
+          category: [getCurrentMenuItem.id],
+        }
         : null;
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
     location.pathname.includes("listing") && currentFilter !== null
       ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-        )
+        new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+      )
       : navigate(getCurrentMenuItem.path);
   }
 
@@ -83,6 +83,19 @@ function HeaderRightContent() {
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
+      <div className="relative flex items-center gap-2 w-40 h-7 group">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="h-7 transition-opacity duration-300 opacity-0 group-hover:opacity-100 pl-3"
+          style={{ width: '100%' }}
+        />
+        <Search
+          onClick={() => navigate("/shop/search")}
+          variant="outline"
+          className="cursor-pointer absolute right-0"
+        />
+      </div>
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -140,7 +153,7 @@ function ShoppingHeader() {
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
           <HousePlug className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
+          <span className="font-bold text-[20px]">Wenddora</span>
         </Link>
         <Sheet>
           <SheetTrigger asChild>
@@ -154,9 +167,7 @@ function ShoppingHeader() {
             <HeaderRightContent />
           </SheetContent>
         </Sheet>
-        <div className="hidden lg:block">
-          <MenuItems />
-        </div>
+
 
         <div className="hidden lg:block">
           <HeaderRightContent />
